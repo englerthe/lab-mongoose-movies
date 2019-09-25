@@ -32,6 +32,16 @@ router.post('/new', (req, res, next) => {
     })
   });
 
+router.post('/:id/delete', (req, res, next) => {
+    Celebrity.findByIdAndRemove(req.params.id)
+    .then((Celebrity) => {
+      res.redirect('/celebrities/');
+    })
+    .catch((error) => {
+        console.log('Error while getting the data from the DB: ', error);
+        next();
+    })
+  });
 
 router.get('/:id', (req, res, next) => {
     Celebrity.findById(req.params.id)
