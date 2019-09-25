@@ -1,11 +1,11 @@
 const express = require('express');
 const router  = express.Router();
 
-const celebrity = require("../models/celebrity.js");
+const Celebrity = require("../models/celebrity.js");
 
 /* GET home page */
 router.get('/', (req, res, next) => {
-    celebrity.find()
+    Celebrity.find()
     .then(dataFromDB => {
       res.render('celebrities/index', { celebrities: dataFromDB });
     })
@@ -15,8 +15,26 @@ router.get('/', (req, res, next) => {
     })
 });
 
+router.get('/new', (req, res, next) => {
+      res.render('celebrities/new');
+});
+
+router.post('/new', (req, res, next) => {
+    const { name, occupation, catchPhrase } = req.body;
+    const newCelebrity = new Celebrity({ name, occupation, catchPhrase})
+    console.log(newCelebrity);
+    newCelebrity.save()
+    .then((Celebrity) => {
+      res.redirect('/celebrities/');
+    })
+    .catch((error) => {
+        res.render('celebrities/new');
+    })
+  });
+
+
 router.get('/:id', (req, res, next) => {
-    celebrity.findById(req.params.id)
+    Celebrity.findById(req.params.id)
     .then(dataFromDB => {
         console.log(dataFromDB);
       res.render('celebrities/show', {celebrities: dataFromDB});
