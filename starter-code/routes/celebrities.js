@@ -15,4 +15,16 @@ router.get('/', (req, res, next) => {
     })
 });
 
+router.get('/:id', (req, res, next) => {
+    celebrity.findById(req.params.id)
+    .then(dataFromDB => {
+        console.log(dataFromDB);
+      res.render('celebrities/show', {celebrities: dataFromDB});
+    })
+    .catch(error => {
+      console.log('Error while getting the data from the DB: ', error);
+      next();
+    })
+});
+
 module.exports = router;
